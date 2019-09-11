@@ -27,7 +27,7 @@
                 {% if object.publish > today %}
                 <small class="d-block font-italic text-danger">Staff Only: Future Post </small>
                 {% endif %}
-                <p class="card-text">{{ object.content|linebreaks|truncatechars:70 }}</p>
+                <p class="card-text content-markdown">{{ object.content|truncatechars:70 }}</p>
                 <a href="{% url 'posts:detail' object.slug %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">
