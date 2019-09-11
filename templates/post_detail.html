@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ instance.title }} |  {{ block.super }}
+{% endblock title%}
+
+{% block content %}
+<div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="mt-4 mb-4">
+        {% if instance.image %}
+        <img src="{{ instance.image.url }}" class="img-fluid" alt="">
+        {% endif %}
+        <h2>{{ instance.title }}</h2>
+        {% if instance.draft %}
+        <span class="text-danger"> Draft </span>
+        {% endif %}
+        {% if instance.publish > today %}
+        <span class="text-danger"> Future Post </span>
+        {% endif %}
+        <p class="text-muted mb-3">Author:
+            {% if instance.user %}
+                {{ instance.user }}
+            {% else %}
+                Anonymous
+            {% endif %}
+        </p>
+        <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-width="" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+        <p><small>{{ instance.publish }} | {{ instance.publish }}</small></p>
+    </div>
+
+<!-- SHARE LINK -->
+
+<!--    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">-->
+<!--    Facebook-->
+<!--    </a>-->
+
+<!--    <a href="https://twitter.com/home?status={{ share_string|truncatechars:80 }}%20{{ request.build_absolute_uri }}">-->
+<!--    Twitter-->
+<!--    </a>-->
+
+<!--    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.title }}&summary={{ share_string|truncatechars:80 }}&source={{ request.build_absolute_uri }}">-->
+<!--    Linkedin-->
+<!--    </a>-->
+
+    {{ instance.content|linebreaks }}<br>
+</div>
+<div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="" data-numposts="5"></div>
+{% endblock content%}

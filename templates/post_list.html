@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container m-3 p-2">
+    <h2>List All Post</h2>
+    <small class="text-muted">Still Don't Have any Post, Sign Up Now and Share Your Stories</small>
+    <div class="text-center form-inline mt-4">
+        <form action="">
+            <input class="form-control form-control-sm" name="search" type="text" placeholder="Search Posts"
+                   value="{{ request.GET.search }}">
+            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+<div class="row card-deck">
+    {% for object in object_list %}
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card mt-2 mb-2">
+            {% if object.image %}
+            <img src="{{ object.image.url }}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'posts:detail' object.slug %}">{{ object.title }}</a></h5>
+                {% if object.draft %}
+                <small class="d-block font-italic text-danger">Staff Only: Draft </small>
+                {% endif %}
+                {% if object.publish > today %}
+                <small class="d-block font-italic text-danger">Staff Only: Future Post </small>
+                {% endif %}
+                <p class="card-text">{{ object.content|linebreaks|truncatechars:70 }}</p>
+                <a href="{% url 'posts:detail' object.slug %}" class="btn btn-primary">View</a>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Published at : {{ object.publish }}
+                    {% if object.user %}
+                        By: {{ object.user }}
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    <div class="mx-auto">
+        <div class="pagination centering mt-3 mb-3">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}=1">&laquo; first</a>
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">next</a>
+                    <a href="?{{ page_request_var }}={{ object_list.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endblock content %}
