@@ -41,7 +41,7 @@
 <!--    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.title }}&summary={{ share_string|truncatechars:80 }}&source={{ request.build_absolute_uri }}">-->
 <!--    Linkedin-->
 <!--    </a>-->
-    <div class="content-markdown">{{ instance.content }}</div>
+    <div class="post-detail-img">{{ instance.get_markdown }}</div>
 </div>
 <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="" data-numposts="5"></div>
 {% endblock content%}

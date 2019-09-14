@@ -14,12 +14,12 @@
 </div>
 <div class="row card-deck">
     {% for object in object_list %}
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-lg-8 col-md-6 col-sm-12">
         <div class="card mt-2 mb-2">
             {% if object.image %}
             <img src="{{ object.image.url }}" class="card-img-top" alt="...">
             {% endif %}
-            <div class="card-body">
+            <div class="card-body post-detail-img">
                 <h5 class="card-title"><a href="{% url 'posts:detail' object.slug %}">{{ object.title }}</a></h5>
                 {% if object.draft %}
                 <small class="d-block font-italic text-danger">Staff Only: Draft </small>
@@ -27,7 +27,7 @@
                 {% if object.publish > today %}
                 <small class="d-block font-italic text-danger">Staff Only: Future Post </small>
                 {% endif %}
-                <p class="card-text content-markdown">{{ object.content|truncatechars:70 }}</p>
+                <p class="card-text">{{ object.get_markdown }}</p>
                 <a href="{% url 'posts:detail' object.slug %}" class="btn btn-primary">View</a>
             </div>
             <div class="card-footer">

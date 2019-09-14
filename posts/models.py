@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.utils import timezone
+
 from django.db.models.signals import pre_save
+
+from markdown_deux import markdown
 
 
 # Create your models here.
-
 # Post.objects.all()
 # Post.objects.create()
 class PostManager(models.Manager):
@@ -34,6 +37,11 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'slug': self.slug})
 
+    def get_markdown(self):
+        content = self.content
+        # Converting content into markdown
+        return mark_safe(markdown(content))
+
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
@@ -53,4 +61,3 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_post_receiver, sender=Post)
-

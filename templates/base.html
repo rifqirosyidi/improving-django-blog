@@ -35,6 +35,9 @@
             var markContent = marked(content)
             $(this).html(markContent)
         })
+        $(".post-detail-img img").each(function(){
+            $(this).addClass("img-fluid")
+        })
     })
 </script>
 </body>

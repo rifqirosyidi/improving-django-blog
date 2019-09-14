@@ -70,7 +70,7 @@ def post_list(request):
     # '-timestamp')
 
     if request.user.is_staff or request.user.is_superuser:
-        query_list = Post.objects.all()
+        query_list = Post.objects.all().order_by('-timestamp')
 
     search = request.GET.get('search')
     if search:

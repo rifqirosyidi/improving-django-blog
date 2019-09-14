@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # Ext Library
+    # Third Library
+    'markdown_deux',
     'pagedown',
 ]
 
