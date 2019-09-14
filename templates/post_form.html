@@ -2,12 +2,22 @@
 <!-- For The Pagedown -->
 {% block extra_head %}{{ form.media }}{% endblock extra_head %}
 {% block content %}
+<div class="row">
+    <div class="col">
+        <h1>Preview</h1>
+        <hr>
+        <h4 id="preview-title"></h4>
+        <p id="preview-content"></p>
+    </div>
 
-    <h4> Form </h4>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="{{ button_variables }}" />
-    </form>
-
+    <div class="col">
+        <h1>Form</h1>
+        <hr>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="{{ button_variables }}" />
+        </form>
+    </div>
+</div>
 {% endblock content %}
