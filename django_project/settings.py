@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Third Library
+    'crispy_forms',
     'markdown_deux',
     'pagedown',
 ]
@@ -125,6 +126,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
