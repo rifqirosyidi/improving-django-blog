@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -46,6 +47,12 @@ class Post(models.Model):
         instance = self
         qs = Comment.objects.filter_by_instance(instance)
         return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 
 def create_slug(instance, new_slug=None):
