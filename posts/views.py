@@ -6,8 +6,10 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models import Q
 
+from django.contrib.contenttypes.models import ContentType
 from .models import Post
 from .forms import PostForm
+from comments.models import Comment
 
 
 def post_create(request):
@@ -35,18 +37,20 @@ def post_create(request):
 
 def post_detail(request, slug):
     today = timezone.now().date()
-
     instance = get_object_or_404(Post, slug=slug)
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_authenticated or not request.user.is_staff or not request.user.is_superuser:
             raise Http404
-
+    content_type = ContentType.objects.get_for_model(Post)
+    object_id = instance.id
+    comments = Comment.objects.filter(content_type=content_type, object_id=object_id)
     share_string = quote_plus(instance.content)
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
-        "today": today
+        "today": today,
+        "comments": comments
     }
     return render(request, 'post_detail.html', context)
 

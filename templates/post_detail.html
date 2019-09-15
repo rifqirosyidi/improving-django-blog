@@ -45,7 +45,14 @@
 
 <hr>
     <p class="lead">Comments</p>
-
+    {% for comment in comments %}
+        <div>
+            {{ comment.content }}
+            <br>
+            <small>from: {{ comment.user }} on: {{ comment.timestamp|timesince }} ago</small>
+            <hr>
+        </div>
+    {% endfor %}
 </div>
 
 <div>{{ instance.comment_set.all }}</div>
