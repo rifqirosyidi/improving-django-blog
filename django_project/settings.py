@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # Apps
     'posts.apps.PostsConfig',
+    'comments.apps.CommentsConfig',
 
     # Django
     'django.contrib.admin',
