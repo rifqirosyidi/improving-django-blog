@@ -53,9 +53,21 @@
     </form>
     <hr>
     {% for comment in comments %}
-        <blockquote class="five-border-left pl-2">
+        <blockquote class="five-border-left p-2">
             <p class="mb-0">{{ comment.content }}</p>
             <footer class="blockquote-footer">from: {{ comment.user }} on: {{ comment.timestamp|timesince }} ago</footer>
+                {% for child_comment in comment.children %}
+                <blockquote class="five-border-left p-2">
+                    <p class="mb-0">{{ child_comment.content }}</p>
+                    <footer class="blockquote-footer">from: {{ child_comment.user }} on: {{ child_comment.timestamp|timesince }} ago</footer>
+                </blockquote>
+                {% endfor %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <button class="btn btn-outline-info" type="submit">Reply Comment</button>
+            </form>
         </blockquote>
     <hr>
     {% endfor %}
