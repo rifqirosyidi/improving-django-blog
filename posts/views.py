@@ -10,7 +10,6 @@ from .models import Post
 from .forms import PostForm
 
 
-# Create your views here.
 def post_create(request):
 
     if not request.user.is_staff or not request.user.is_superuser:
@@ -18,20 +17,13 @@ def post_create(request):
 
     if not request.user.is_authenticated:
         raise Http404
-    # request files when you have image field / files to upload
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        # or you can use form.cleaned_data.get('field')
         instance.user = request.user
         instance.save()
         messages.success(request, "Successfuly Created")
         return HttpResponseRedirect(f'/posts/{instance.slug}/')
-
-    # Capture The Data From the Form (Not Recommend .. add request.POST to PostForm(...) is sugested)
-    # if request.method == 'POST':
-    #     print(request.POST.get('title'))
-    #     print(request.POST.get('content'))
 
     button_variables = "Create"
     context = {
@@ -42,11 +34,9 @@ def post_create(request):
 
 
 def post_detail(request, slug):
-    # this instance will raise an error , we dont want that so, use get_object_or_404
-    # instance = Post.objects.get(id=99)
     today = timezone.now().date()
 
-    instance = get_object_or_404(Post, slug=slug)  # This will return 404 page default. id not found, not an error
+    instance = get_object_or_404(Post, slug=slug)
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_authenticated or not request.user.is_staff or not request.user.is_superuser:
             raise Http404
@@ -59,15 +49,11 @@ def post_detail(request, slug):
         "today": today
     }
     return render(request, 'post_detail.html', context)
-    # return HttpResponse('Detail')
 
 
 def post_list(request):
-    # Using Model Manager
     today = timezone.now().date()
     query_list = Post.objects.active()
-    # filter(draft=False).filter(publish__lte=timezone.now())  # all().order_by(
-    # '-timestamp')
 
     if request.user.is_staff or request.user.is_superuser:
         query_list = Post.objects.all().order_by('-timestamp')

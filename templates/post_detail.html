@@ -42,8 +42,12 @@
 <!--    Linkedin-->
 <!--    </a>-->
     <div class="post-detail-img">{{ instance.get_markdown }}</div>
+
+<hr>
+    <p class="lead">Comments</p>
+
 </div>
+
 <div>{{ instance.comment_set.all }}</div>
 
-<div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-width="" data-numposts="5"></div>
 {% endblock content%}
