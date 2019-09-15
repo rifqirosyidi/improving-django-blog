@@ -59,7 +59,9 @@
                 {% if comment.children.count > 0 %}
                     {{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %}
                 {% endif %}
+                <br>
                 <a href="#" class="comment-reply-btn"> Reply </a>
+                <a href="{% url 'comments:thread' comment.id %}"> Thread </a>
             </footer>
             <div class="comment-reply">
                     {% for child_comment in comment.children %}
