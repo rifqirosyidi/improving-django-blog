@@ -45,16 +45,14 @@
 
 <hr>
     <p class="lead">Comments</p>
+    <hr>
     {% for comment in comments %}
-        <div>
-            {{ comment.content }}
-            <br>
-            <small>from: {{ comment.user }} on: {{ comment.timestamp|timesince }} ago</small>
-            <hr>
-        </div>
+        <blockquote class="five-border-left pl-2">
+            <p class="mb-0">{{ comment.content }}</p>
+            <footer class="blockquote-footer">from: {{ comment.user }} on: {{ comment.timestamp|timesince }} ago</footer>
+        </blockquote>
+    <hr>
     {% endfor %}
 </div>
-
-<div>{{ instance.comment_set.all }}</div>
 
 {% endblock content%}

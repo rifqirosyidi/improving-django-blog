@@ -11,3 +11,7 @@ h1 {
     margin-left: 0px !important;
     margin-right: 0px !important;
 }
+
+.five-border-left {
+    border-left: 5px solid #dee2e6 !important;
+}

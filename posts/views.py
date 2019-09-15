@@ -41,9 +41,8 @@ def post_detail(request, slug):
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_authenticated or not request.user.is_staff or not request.user.is_superuser:
             raise Http404
-    content_type = ContentType.objects.get_for_model(Post)
-    object_id = instance.id
-    comments = Comment.objects.filter(content_type=content_type, object_id=object_id)
+
+    comments = instance.comments
     share_string = quote_plus(instance.content)
     context = {
         "title": instance.title,
