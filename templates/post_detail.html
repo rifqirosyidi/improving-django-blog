@@ -47,11 +47,15 @@
 
 <hr>
     <p class="lead">Comments</p>
+    {% if user.is_authenticated %}
     <form action="" method="POST">
         {% csrf_token %}
         {{ comment_form|crispy }}
         <button class="btn btn-info" type="submit">Submit Comment</button>
     </form>
+    {% else %}
+    <p>You Must Login to Comment!</p>
+    {% endif %}
     <hr>
     {% for comment in comments %}
         <blockquote class="five-border-left p-2">
@@ -71,12 +75,16 @@
                     <footer class="blockquote-footer">from: {{ child_comment.user }} on: {{ child_comment.timestamp|timesince }} ago</footer>
                 </blockquote>
                 {% endfor %}
+                {% if user.is_authenticated %}
                 <form action="" method="POST">
                     {% csrf_token %}
                     {{ comment_form|crispy }}
                     <input type="hidden" name="parent_id" value="{{ comment.id }}">
                     <button class="btn btn-outline-info" type="submit">Reply Comment</button>
                 </form>
+                {% else %}
+                <p>You Must Login to Reply</p>
+                {% endif %}
             </div>
 
         </blockquote>

@@ -10,9 +10,10 @@ from accounts.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('posts/', include('posts.urls')),
     path('comments/', include('comments.urls')),
+    path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
+    path('', include('posts.urls')),
 ]
 
 if settings.DEBUG:

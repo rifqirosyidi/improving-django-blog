@@ -30,12 +30,16 @@
                     </footer>
                 </blockquote>
                 {% endfor %}
+                {% if user.is_authenticated %}
                 <form action="" method="POST">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <input type="hidden" name="parent_id" value="{{ comment.id }}">
                     <button class="btn btn-outline-info" type="submit">Reply Comment</button>
                 </form>
+                {% else %}
+                <p>You Must Login to Comments</p>
+                {% endif %}
             </div>
         </blockquote>
     <hr>

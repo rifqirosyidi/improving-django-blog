@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
@@ -7,6 +8,7 @@ from .forms import CommentForm
 
 
 # Create your views here.
+@login_required
 def confirm_delete(request, pk):
     # obj = get_object_or_404(Comment, pk=pk)
     try:

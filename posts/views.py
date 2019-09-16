@@ -1,5 +1,6 @@
 from urllib.parse import quote_plus
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, Http404
@@ -12,20 +13,16 @@ from comments.models import Comment
 from comments.forms import CommentForm
 
 
+@login_required
 def post_create(request):
 
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-
-    if not request.user.is_authenticated:
-        raise Http404
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.user = request.user
         instance.save()
         messages.success(request, "Successfuly Created")
-        return HttpResponseRedirect(f'/posts/{instance.slug}/')
+        return HttpResponseRedirect(f'/{instance.slug}/')
 
     button_variables = "Create"
     context = {
@@ -72,7 +69,7 @@ def post_detail(request, slug):
             parent=parent_obj
         )
 
-        return HttpResponseRedirect(f'/posts/{instance.slug}/')
+        return HttpResponseRedirect(f'/{instance.slug}/')
 
     comments = instance.comments
     share_string = quote_plus(instance.content)
@@ -115,21 +112,20 @@ def post_list(request):
     return render(request, 'post_list.html', context)
 
 
+@login_required
 def post_update(request, slug):
 
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-
-    if not request.user.is_authenticated:
-        raise Http404
-
     instance = get_object_or_404(Post, slug=slug)
-    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        messages.success(request, "Post Updated")
-        return HttpResponseRedirect(f'/posts/{instance.slug}/')
+
+    if request.user == instance.user or request.user.is_superuser:
+        form = PostForm(request.POST or None, request.FILES or None, instance=instance)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.save()
+            messages.success(request, "Post Updated")
+            return HttpResponseRedirect(f'/{instance.slug}/')
+    else:
+        raise Http404("You Dont Have Permission to delete this post")
 
     button_variables = "Update"
     context = {
@@ -141,15 +137,14 @@ def post_update(request, slug):
     return render(request, 'post_form.html', context)
 
 
+@login_required
 def post_delete(request, slug):
 
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-
-    if not request.user.is_authenticated:
-        raise Http404
-
     instance = get_object_or_404(Post, slug=slug)
-    instance.delete()
-    messages.success(request, "Successfuly Deleted")
-    return redirect('posts:list')
+
+    if request.user == instance.user or request.user.is_superuser:
+        instance.delete()
+        messages.success(request, "Successfuly Deleted")
+        return redirect('posts:list')
+    else:
+        raise Http404("You Dont Have Permission to delete this post")
