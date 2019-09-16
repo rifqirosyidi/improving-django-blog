@@ -26,7 +26,8 @@
             {% endif %}
         </p>
         <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-width="" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-        <p><small>{{ instance.publish }} | {{ instance.publish }}</small></p>
+        <p><small>{{ instance.publish }}</small></p>
+        <p><small>Read time: {% if instance.read_time <= 1 %} < 1 Minute {% else %} {{ instance.read_time }} Minutes {% endif %}</small></p>
     </div>
 
 <!-- SHARE LINK -->

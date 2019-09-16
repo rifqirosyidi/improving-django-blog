@@ -10,7 +10,6 @@ from .models import Post
 from .forms import PostForm
 from comments.models import Comment
 from comments.forms import CommentForm
-from .utils import get_read_time
 
 
 def post_create(request):
@@ -42,8 +41,6 @@ def post_detail(request, slug):
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_authenticated or not request.user.is_staff or not request.user.is_superuser:
             raise Http404
-
-    print(get_read_time(instance.get_markdown()))
 
     initial_data = {
         "content_type": instance.get_content_type,
