@@ -15,12 +15,19 @@
                 {% if comment.children.count > 0 %}
                     {{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %}
                 {% endif %}
+                {% if request.user == comment.user %}
+                    <a href="{% url 'comments:delete' comment.id %}">Delete</a>
+                {% endif %}
             </footer>
             <div>
                 {% for child_comment in comment.children %}
                 <blockquote class="five-border-left p-2">
                     <p class="mb-0">{{ child_comment.content }}</p>
-                    <footer class="blockquote-footer">from: {{ child_comment.user }} on: {{ child_comment.timestamp|timesince }} ago</footer>
+                    <footer class="blockquote-footer">from: {{ child_comment.user }} on: {{ child_comment.timestamp|timesince }} ago
+                        {% if request.user == comment.user %}
+                        <a href="{% url 'comments:delete' child_comment.id %}">Delete</a>
+                        {% endif %}
+                    </footer>
                 </blockquote>
                 {% endfor %}
                 <form action="" method="POST">
